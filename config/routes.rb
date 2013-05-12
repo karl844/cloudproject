@@ -1,11 +1,30 @@
 FirstApp::Application.routes.draw do
-  get "pages/about"
+  
+  resources :users do
+    member do
+      get :following, :followers
+      end
+    end
 
-  get "pages/home"
+  resources :sessions,      :only => [:new, :create, :destroy]
+  resources :microposts,    :only => [:create, :destroy]
+  resources :relationships, :only => [:create, :destroy]
 
-  get "pages/contact"
+  root :to => 'pages#home'
 
-  # The priority is based upon order of creation:
+  match '/contact', :to => 'pages#contact'
+
+  match '/about', :to => 'pages#about'
+
+  match '/help', :to => 'pages#help'
+ 
+  match '/signup', :to => 'users#new'
+
+  match '/signin', :to => 'sessions#new'
+
+  match '/signout', :to => 'sessions#destroy'
+
+    # The priority is based upon order of creation:
   # first created -> highest priority.
 
   # Sample of regular route:
